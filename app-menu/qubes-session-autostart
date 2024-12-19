@@ -36,9 +36,9 @@ QUBES_XDG_CONFIG_DROPINS = '/etc/qubes/autostart'
 
 def check_file_existence(path: str) -> bool:
     if os.path.isabs(path):
-        return os.path.isfile(path)
+        return os.path.exists(path)
     else:
-        return os.path.isfile(os.path.join(xdg.BaseDirectory.xdg_config_home, path))
+        return os.path.exists(os.path.join(xdg.BaseDirectory.xdg_config_home, path))
 
 
 def entry_should_be_started(entry, environments):
