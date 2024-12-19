@@ -53,13 +53,12 @@ def entry_should_be_started(entry, environments):
     # https://lists.freedesktop.org/archives/xdg/2007-January/007436.html
     # Only if-exists and unless-exists keywords are supported
     # Invalid syntax is ignored
-    if entry.get('AutostartCondition', list=True):
-        for autostart_condition in entry.get('AutostartCondition', list=True):
-            search = re.search(r'^\s*(if|unless)-exists (.*)', autostart_condition)
-            if search:
-                should_exists = search.group(1) == 'if'
-                if should_exists != check_file_existence(search.group(2)):
-                    return False
+    for autostart_condition in entry.get('AutostartCondition', list=True):
+        search = re.search(r'^\s*(if|unless)-exists (.*)', autostart_condition)
+        if search:
+            should_exists = search.group(1) == 'if'
+            if should_exists != check_file_existence(search.group(2)):
+                return False
 
     if entry.getOnlyShowIn():
         return bool(set(entry.getOnlyShowIn()).intersection(environments))
