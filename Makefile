@@ -54,6 +54,9 @@ SYSTEM_DROPINS += sysinit.target
 ifeq ($(ENABLE_SELINUX),1)
 SYSTEM_DROPINS += selinux-autorelabel.target selinux-autorelabel.service
 endif
+SYSTEMD_DROPINS += polkit.service
+SYSTEMD_DROPINS += abrtd.service
+SYSTEMD_DROPINS += bluetooth.service
 
 SYSTEM_DROPINS_NETWORKING := NetworkManager.service NetworkManager-wait-online.service
 SYSTEM_DROPINS_NETWORKING += tinyproxy.service
@@ -68,7 +71,12 @@ USER_DROPINS := \
 	evolution-addressbook-factory.service \
 	evolution-calendar-factory.service \
 	evolution-source-registry.service \
-	evolution-user-prompter.service
+	evolution-user-prompter.service \
+	pipewire.service \
+	gvfs-daemon.service \
+	at-spi-dbus-bus.service \
+	wireplumber.service
+
 
 # Ubuntu Dropins
 ifeq ($(release),Ubuntu)
