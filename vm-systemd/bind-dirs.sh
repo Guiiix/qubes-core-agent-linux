@@ -135,6 +135,14 @@ for source_folder in "${sources[@]}"; do
    done
 done
 
+# read binds in QubesDB if custom-persist feature is enabled
+if [ -f "/var/run/qubes-service/custom-persist" ]; then
+  while read -r qubes_persist_entry; do
+    [ -z "${qubes_persist_entry}" ] && continue
+    binds+=( "$(qubesdb-read /persist/"${qubes_persist_entry}")" )
+  done <<< "$(qubesdb-list /persist/)"
+fi
+
 main "$@"
 
 true "OK: END."
