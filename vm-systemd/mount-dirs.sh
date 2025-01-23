@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Source Qubes library.
 # shellcheck source=init/functions
@@ -10,9 +10,31 @@ set -e
 if [ -e /dev/xvdb ] ; then mount /rw ; fi
 /usr/lib/qubes/init/setup-rw.sh
 
-initialize_home "/rw/home" ifneeded
-echo "Mounting /rw/home onto /home" >&2
-mount /home
-echo "Mounting /rw/usrlocal onto /usr/local" >&2
-mount /usr/local
-/usr/lib/qubes/init/bind-dirs.sh
+if is_custom_persist_enabled; then
+  mount_home=false
+  mount_usr_local=false
+
+  while read -r qubes_persist_entry; do
+    [ -z "${qubes_persist_entry}" ] && continue
+    mount_point="$(qubesdb-read /persist/"${qubes_persist_entry}")"
+    [ "$mount_point" = "/home" ] && mount_home=true
+    [ "$mount_point" = "/usr/local" ] && mount_usr_local=true
+  done <<< "$(qubesdb-list /persist/)"
+else
+  mount_home=true
+  mount_usr_local=true
+fi
+
+if $mount_home; then
+  initialize_home "/rw/home" ifneeded
+else
+  disable_persistent_home
+  initialize_home "/home" unconditionally
+fi
+
+if $mount_usr_local; then
+  disable_persistent_usrlocal
+fi
+
+systemctl daemon-reload
+

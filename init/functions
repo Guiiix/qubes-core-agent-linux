@@ -57,6 +57,10 @@ is_appvm() {
     [ "$(qubes_vm_type)" = "AppVM" ]
 }
 
+is_custom_persist_enabled() {
+  [ -f "/var/run/qubes-service/custom-persist" ]
+}
+
 is_proxyvm() {
     [ "$(qubes_vm_type)" = "ProxyVM" ]
 }
@@ -93,6 +97,7 @@ is_protected_file() {
     done
     return "$ret"
 }
+
 
 umount_retry() {
     local count=5
@@ -245,4 +250,22 @@ initialize_home() {
         fi
         for waitpid in $waitpids ; do wait "$waitpid" ; done ; waitpids=
     done
+}
+
+disable_persistent_home() {
+  echo "Disabling persistent /home"
+  mkdir /run/systemd/system/home.mount.d
+  cat << EOF > /run/systemd/system/home.mount.d/30_qubes.conf
+[Mount]
+What=/home
+EOF
+}
+
+disable_persistent_usrlocal() {
+  echo "Disabling persistent /usr/local"
+  mkdir /run/systemd/system/usr-local.mount.d
+  cat << EOF > /run/systemd/system/usr-local.mount.d/30_qubes.conf
+[Mount]
+What=/usr/local
+EOF
 }

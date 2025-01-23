@@ -139,7 +139,10 @@ done
 if [ -f "/var/run/qubes-service/custom-persist" ]; then
   while read -r qubes_persist_entry; do
     [ -z "${qubes_persist_entry}" ] && continue
-    binds+=( "$(qubesdb-read /persist/"${qubes_persist_entry}")" )
+    target="$(qubesdb-read /persist/"${qubes_persist_entry}")"
+    [ "$target" = "/home" ] && continue
+    [ "$target" = "/usr/local" ] && continue
+    binds+=( "target" )
   done <<< "$(qubesdb-list /persist/)"
 fi
 
