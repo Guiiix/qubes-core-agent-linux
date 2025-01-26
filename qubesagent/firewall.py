@@ -88,8 +88,9 @@ class FirewallWorker(object):
 
     def run_firewall_dir(self):
         """Run scripts dir contents, before user script"""
-        script_dir_paths = ['/etc/qubes/qubes-firewall.d',
-                            '/rw/config/qubes-firewall.d']
+        script_dir_paths = ['/etc/qubes/qubes-firewall.d']
+        if not os.path.isfile('/var/run/qubes-service/custom-persist'):
+            script_dir_paths.append('/rw/config/qubes-firewall.d')
         for script_dir_path in script_dir_paths:
             if not os.path.isdir(script_dir_path):
                 continue
