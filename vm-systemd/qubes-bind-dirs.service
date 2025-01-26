@@ -2,7 +2,7 @@
 Description=Mount configured bind files and directories
 After=qubes-mount-dirs.service local-fs.target rw.mount home.mount usr-local.mount
 Before=qubes-gui-agent.service
-Requires: home.mount usr-local.mount
+Requires=home.mount usr-local.mount
 
 [Service]
 Type=oneshot
