@@ -32,7 +32,7 @@ else
   initialize_home "/home" unconditionally
 fi
 
-if $mount_usr_local; then
+if ! $mount_usr_local; then
   disable_persistent_usrlocal
 fi
 
