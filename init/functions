@@ -23,7 +23,7 @@ qsvc() {
 }
 
 under_systemd() {
-    pidof systemd >/dev/null 2>&1
+    [ "$(cat /proc/1/comm)" = "systemd" ]
 }
 
 systemd_version_changed() {
