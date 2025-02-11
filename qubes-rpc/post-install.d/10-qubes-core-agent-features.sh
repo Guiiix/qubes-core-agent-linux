@@ -131,3 +131,6 @@ advertise_systemd_service qubes-updates-proxy qubes-updates-proxy.service
 advertise_systemd_service qubes-firewall qubes-firewall.service
 advertise_systemd_service qubes-network qubes-network.service
 advertise_systemd_service apparmor apparmor.service
+
+qvm-features-request supported-service.minimal-netvm=1
+qvm-features-request supported-service.minimal-usbvm=1
