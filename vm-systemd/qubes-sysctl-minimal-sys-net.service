@@ -6,7 +6,6 @@ After=systemd-modules-load.service qubes-sysinit.service
 Before=sysinit.target shutdown.target
 ConditionPathIsReadWrite=/proc/sys/net/
 ConditionPathExists=/var/run/qubes-service/minimal-netvm
-ConditionPathExists=/var/run/qubes/this-is-netvm
 
 [Service]
 Type=oneshot
